@@ -5,24 +5,12 @@ import styles from "../styles/Home.module.css";
 import Banner from "../components/banner";
 import Card from "../components/card";
 import coffeeStoresData from "../data/coffee-stores.json";
+import { fetchCoffeeStores } from "../lib/coffee-stores";
 
 export async function getStaticProps(context) {
-	const options = {
-		method: "GET",
-		headers: {
-			Accept: "application/json",
-			Authorization: "heregoesapikey,willgetitlater",
-		},
-	};
-
-	const response = await fetch(
-		"https://api.foursquare.com/v3/places/search",
-		options
-	);
-	const data = response.json();
-
+	const coffeeStores = fetchCoffeeStores();
 	return {
-		props: { coffeeStores: data },
+		props: { coffeeStores },
 	};
 }
 
