@@ -46,7 +46,7 @@ const CoffeeStore = (props) => {
 		return <div>Loading...</div>;
 	}
 
-	const { location, name, imgUrl } = props.coffeeStore;
+	const { name, address, neighbourhood, imgUrl } = props.coffeeStore;
 
 	const handleUpvoteButton = () => {
 		console.log("handle upvote");
@@ -61,7 +61,7 @@ const CoffeeStore = (props) => {
 				<div className={styles.col1}>
 					<div className={styles.backToHomeLink}>
 						<Link href="/">
-							<a>Back to home</a>
+							<a>← Back to home</a>
 						</Link>
 					</div>
 					<div className={styles.nameWrapper}>
@@ -76,24 +76,28 @@ const CoffeeStore = (props) => {
 					/>
 				</div>
 				<div className={cls("glass", styles.col2)}>
-					<div className={styles.iconWrapper}>
-						<Image
-							src={
-								imgUrl ||
-								"https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
-							}
-							width="24"
-							height="24"></Image>
-						<p className={styles.text}>{location.address}</p>
-					</div>
+					{address && (
+						<div className={styles.iconWrapper}>
+							<Image
+								src={
+									imgUrl ||
+									"https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
+								}
+								width="24"
+								height="24"></Image>
+							<p className={styles.text}>{address}</p>
+						</div>
+					)}
 
-					<div className={styles.iconWrapper}>
-						<Image
-							src="/static/icons/nearMe.svg"
-							width="24"
-							height="24"></Image>
-						<p className={styles.text}>{location.neighborhood[0]}</p>
-					</div>
+					{neighbourhood && (
+						<div className={styles.iconWrapper}>
+							<Image
+								src="/static/icons/nearMe.svg"
+								width="24"
+								height="24"></Image>
+							<p className={styles.text}>{location.neighborhood[0]}</p>
+						</div>
+					)}
 
 					<div className={styles.iconWrapper}>
 						<Image src="/static/icons/star.svg" width="24" height="24"></Image>

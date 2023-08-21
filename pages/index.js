@@ -40,10 +40,10 @@ export default function Home(props) {
 							{coffeeStoresData.map((coffeeStore) => {
 								return (
 									<Card
-										key={coffeeStore.fsq_id}
+										key={coffeeStore.id}
 										name={coffeeStore.name}
 										imgUrl={coffeeStore.imgUrl}
-										href={`/coffee-store/${coffeeStore.fsq_id}`}
+										href={`/coffee-store/${coffeeStore.id}`}
 										className={styles.card}
 									/>
 								);
