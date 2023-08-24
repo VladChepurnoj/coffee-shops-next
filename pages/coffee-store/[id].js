@@ -4,7 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import cls from "classnames";
 
-import coffeeStoresData from "../../data/coffee-stores.json";
+// import coffeeStoresData from "../../data/coffee-stores.json";
 
 import styles from "../../styles/coffee-store.module.css";
 
@@ -16,7 +16,7 @@ export async function getStaticProps(staticProps) {
 	return {
 		props: {
 			coffeeStore: coffeeStores.find((coffeeStore) => {
-				return coffeeStore.fsq_id.toString() === params.id;
+				return coffeeStore.id.toString() === params.id;
 			}),
 		},
 	};
@@ -28,7 +28,7 @@ export async function getStaticPaths() {
 	const paths = coffeeStores.map((coffeeStore) => {
 		return {
 			params: {
-				id: coffeeStore.fsq_id.toString(),
+				id: coffeeStore.id.toString(),
 			},
 		};
 	});
