@@ -65,6 +65,30 @@ const CoffeeStore = (initialProps) => {
 		state: { coffeeStores },
 	} = useContext(StoreContext);
 
+	const handleCreateCoffeeStore = async (coffeeStore) => {
+		try {
+			const { id, name, voting, imgUrl, neighborhood, address } = coffeeStore;
+			const response = await fetch("/api/createCoffeeStore", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					id,
+					name,
+					voting: 0,
+					imgUrl,
+					neighborhood: neighborhood || "",
+					address: address || "",
+				}),
+			});
+			const dbCoffeeStore = await response.json();
+			console.log({ dbCoffeeStore });
+		} catch (err) {
+			console.error("Error creating coffee store", err);
+		}
+	};
+
 	useEffect(() => {
 		if (isEmpty(initialProps.coffeeStore)) {
 			if (coffeeStores.length > 0) {
@@ -72,14 +96,21 @@ const CoffeeStore = (initialProps) => {
 					return coffeeStore.id.toString() === id; //dynamic id
 				});
 				setCoffeeStore(findCoffeeStoreById);
+				handleCreateCoffeeStore(findCoffeeStoreById);
 			}
+		} else {
+			// ssg
+			handleCreateCoffeeStore(initialProps.coffeeStore);
 		}
-	}, [id]);
+	}, [id, initialProps.coffeeStore]);
 
 	const { name, address, neighbourhood, imgUrl } = coffeeStore;
+	const [votingCount, setVotingCount] = useState(1);
 
 	const handleUpvoteButton = () => {
 		console.log("handle upvote");
+		let count = votingCount + 1;
+		setVotingCount(count);
 	};
 
 	return (
@@ -131,7 +162,7 @@ const CoffeeStore = (initialProps) => {
 
 					<div className={styles.iconWrapper}>
 						<Image src="/static/icons/star.svg" width="24" height="24"></Image>
-						<p className={styles.text}>1</p>
+						<p className={styles.text}>{votingCount}</p>
 					</div>
 
 					<button className={styles.upvoteButton} onClick={handleUpvoteButton}>
