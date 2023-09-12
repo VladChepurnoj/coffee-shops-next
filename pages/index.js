@@ -12,6 +12,20 @@ import useTrackLocation from "../hooks/use-track-location";
 import { ACTION_TYPES, StoreContext } from "../store/store-context";
 
 export async function getStaticProps(context) {
+	if (
+		!process.env.NEXT_PUBLIC_FOURSQUARE_API_KEY &&
+		!process.env.AIRTABLE_API_KEY &&
+		!process.env.AIRTABLE_BASE_KEY &&
+		!process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY
+	) {
+		return {
+			redirect: {
+				destination: "/problem",
+				pemanent: false,
+			},
+		};
+	}
+
 	const coffeeStores = fetchCoffeeStores();
 	return {
 		props: { coffeeStores },
@@ -56,7 +70,7 @@ export default function Home(props) {
 			}
 		}
 		setCoffeeStoresByLocation();
-	}, [latLong]);
+	}, [latLong, dispatch]);
 
 	const handleOnBannerBtnClick = () => {
 		console.log("hi banner button");
@@ -67,6 +81,10 @@ export default function Home(props) {
 			<Head>
 				<title>Coffee Connoisseur</title>
 				<link rel="icon" href="../public/static/favicon.ico" />
+				<meta
+					name="description"
+					content="allows you to  discover coffee stores"
+				/>
 			</Head>
 			<main className={styles.main}>
 				<Banner
@@ -76,7 +94,12 @@ export default function Home(props) {
 				{locationErrorMsg && <p>Something went wrong: {locationErrorMsg}</p>}
 				{coffeeStoresError && <p>Something went wrong: {coffeeStoresError}</p>}
 				<div className={styles.heroImage}>
-					<Image src="/static/hero-image.png" width={700} height={400} />
+					<Image
+						src="/static/hero-image.png"
+						width={700}
+						height={400}
+						alt="hero image"
+					/>
 				</div>
 
 				{coffeeStores.length > 0 && (
